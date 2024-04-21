@@ -117,6 +117,55 @@ class State(rx.State):
 
 color = "rgb(107,99,246)"
 
+def navbar():
+    """The navbar for the top of the page with 'Soru.ai', 'Blog', 'About' aligned to the left and 'Sign In' to the right."""
+    navbar_style = {
+        "display": "flex",
+        "justify_content": "space-between",
+        "align_items": "center",
+        "padding": "0.75rem 1rem",
+        "background": "white",
+        "box_shadow": "0 2px 4px rgba(0,0,0,0.1)",
+        "position": "absolute",
+        "top": "0",
+        "left": "0",
+        "width": "100%",
+        "z_index": "10"
+    }
+
+    link_style = {
+        "font-size": "1rem",
+        "color": "black",
+        "text-decoration": "none",
+        "padding": "0.5rem 1rem",  # Uniform padding for all nav links
+        "cursor": "pointer"
+    }
+
+    sign_in_style = {
+        **link_style,  # Spread the base link style and then override as necessary
+        "border-radius": "20px",
+        "background-color": "#635BFF",
+        "color": "white",
+        "font-weight": "bold",
+    }
+
+    return rx.box(
+        rx.hstack(
+            rx.text("Soru.ai", style={
+                "font-weight": "bold",
+                "font-size": "1.5rem",
+                "color": "black",
+                "margin-right": "2rem",  # Provide some space between the logo and navigation links
+            }),
+            rx.text("Blog", href="/blog", style=link_style),
+            rx.text("About", href="/about", style=link_style),
+            rx.spacer(),  # Pushes the 'Sign In' text to the right
+            rx.text("Sign In", style=sign_in_style),
+            style=navbar_style
+        )
+    )
+
+
 def main_banner():
     """Creates a main banner similar to the KyoHealth example."""
     return rx.box(
@@ -124,7 +173,7 @@ def main_banner():
             "Your AI-powered Copilot for Education",
             style={
                 "font_size": "3rem",  # Large font size for main heading
-                "color": "#333",  # Dark text for contrast
+                "color": "white",  # Dark text for contrast
                 "text_align": "center",  # Centered text
                 "margin": "1rem 0",  # Margin top and bottom
             }
@@ -140,64 +189,146 @@ def main_banner():
 
     )
 
-def fb(card: str, index: int):
-    return rx.box(
-        rx.box(card),  
-        on_click= State.swap_card(index),
-        margin_bottom="10px",
-        padding="10px",
-        border="1px solid #555",
-        width="70vw",
-    )
 
-
+flashcard_style = {
+    'display': 'flex',
+    'flex_direction': 'column',
+    'justify_content': 'center',
+    'align_items': 'center',
+    'margin': '1rem 0',
+    'padding': '1.5rem',
+    'background': 'white',
+    'border': '1px solid #ddd',
+    'border_radius': '10px',
+    'box_shadow': '0px 0px 10px rgba(0, 0, 0, 0.1)',
+    'width': '60vw',  # Control the width of the flashcards
+    'max_width': '500px',  # Maximum width of the flashcards
+    'cursor': 'pointer',
+}
 
 def index():
     """The main view."""
+    upload_box_style = {
+        'display': 'flex',
+        'flex-direction': 'column',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'border': f'2px dashed {color}',
+        'border-radius': '10px',
+        'padding': '2em',
+        'margin': '2em 0',
+        'hover': {
+            'border-color': '#ffffff',
+            'background': 'rgba(255, 255, 255, 0.1)',
+        },
+        'active': {
+            'border-color': '#ffffff',
+            'background': 'rgba(255, 255, 255, 0.2)',
+        },
+    }
+
     return rx.vstack(
+        navbar(),
         main_banner(),
-        rx.heading("Welcome to Suraq!"),
-        rx.upload(
-            rx.vstack(
-                rx.button("Select File", color=color, bg="white", border=f"1px solid {color}"),
-                rx.text("Drag and drop files here or click to select files"),
+        rx.center(
+            rx.upload(
+                rx.vstack(
+                    rx.button(
+                        "Select File",
+                        color=color,
+                        bg="white",
+                        border=f"2px solid {color}",
+                        padding="1em 2em",  # Increase padding for a larger button
+                        border_radius="10px",  # Rounded corners
+                        font_weight="bold",  # Make the text bold
+                        text_transform="uppercase",  # Capitalize text for emphasis
+                        box_shadow="0 4px 8px 0 rgba(0,0,0,0.2)",  # Box shadow for a 3D effect
+                        hover_bg="#e1e1e1",  # Slightly darker background on hover for interactivity
+                        cursor="pointer",  # Change cursor to indicate button
+                        transition="all 0.3s ease-in-out",  # Smooth transition for hover effects
+                    ),
+                    rx.text(
+                        "Drag and drop files here or click to select files",
+                        color="white",
+                        margin="1em",
+                        font_size="1.1em",  # Slightly larger font size
+                        text_shadow="1px 1px 2px grey",  # Text shadow for better readability
+                    )
+                ),
+                id="upload1",
+                style=upload_box_style,  # Apply the custom styles
             ),
-            id="upload1",
-            border=f"1px dotted {color}",
-            padding="5em",
+            width="100%",  # Ensure the centering container takes full width
         ),
         rx.hstack(rx.foreach(rx.selected_files("upload1"), rx.text)),
         rx.button(
-            "Upload",
-            on_click= State.upload(rx.upload_files(upload_id="upload1")),
-        ),
+    "Upload",
+    on_click=State.upload(rx.upload_files(upload_id="upload1")),
+    color=color,
+    bg="white",
+    border=f"2px solid {color}",
+    padding="1em 2em",  # Matched padding
+    border_radius="10px",  # Matched border-radius
+    font_weight="bold",  # Matched font weight
+    text_transform="uppercase",  # Matched text transform
+    box_shadow="0 4px 8px 0 rgba(0,0,0,0.2)",  # Matched box shadow
+    hover_bg="#e1e1e1",  # Matched hover background color
+    cursor="pointer",  # Change cursor to indicate button
+    transition="all 0.3s ease-in-out",  # Smooth transition for hover effects
+)
+,
         padding="5em",
+        bg="linear-gradient(to right, #614385, #516395)",
+        height="100vh",
     )
 
 
-def quizlet_page():
-    return rx.box(
-        rx.cond(
-            State.processing,
-            rx.chakra.circular_progress(is_indeterminate=True),
-            rx.cond(
-                State.complete,
-                rx.box(
-                    rx.foreach(State.visual_cards_list, 
-                        lambda card, index: fb(
-                            card, index
-                        ))
-                ),
-            )
-        ),
 
+def fb(card, index):
+    # Define your card style here
+    card_style = {
+        'padding': '10px',
+        'margin': '10px 0',  # Add some space between cards
+        'border': '1px solid #ddd',
+        'border_radius': '5px',
+        'box_shadow': '0 2px 4px rgba(0,0,0,0.1)',
+        'width': '100%',  # Full width of the container
+    }
+    return rx.box(
+        rx.text(card, style={'font_size': '1rem', 'color': '#333'}),
+        on_click=lambda: State.swap_card(index),
+        style=card_style
+    )
+
+def quizlet_page():
+    flashcards_content = rx.box(
         rx.foreach(State.img, lambda img: rx.image(src=rx.get_upload_url(State.img), 
                                                    width="50vw",
                                                    height="auto",
                                                    border="5px solid #555")),
-
-        padding="5em"
+        rx.foreach(
+        State.visual_cards_list,
+        lambda card, index: fb(card, index))
     )
+
+    content = rx.cond(
+        State.processing,
+        rx.chakra.circular_progress(is_indeterminate=True),
+        rx.cond(
+            State.complete,
+            flashcards_content,
+            rx.text("Waiting to process flashcards...")
+        )
+    )
+
+    return rx.vstack(
+        navbar(),
+        rx.box(content, style={'padding': '5em', 'align_items': 'center', 'width': '100vw'}),
+        style={'align_items': 'center', 'justify_content': 'center', 'width': '100vw', 'min_height': '100vh'}
+    )
+
+# ... (Your existing app setup and page registration)
+
 
 
 
