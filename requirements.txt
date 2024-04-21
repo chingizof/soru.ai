@@ -1,1 +1,11 @@
+Django==5.1.dev20231109130319
+Flask-SQLAlchemy==3.1.1
+google-generativeai==0.5.2
+grpcio-status==1.62.2
+OpenNMT-py==1.1.1
+psycopg2-binary==2.9.9
+python-dotenv==1.0.0
 reflex==0.4.8.post1
+Rx==3.2.0
+sacrebleu==2.4.0
+transformers==4.37.2

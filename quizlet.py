@@ -58,13 +58,13 @@ def main_banner():
             }
         ),
         style = {
-    "padding": "4rem 1rem",              # Padding around the text
-    "border_radius": "0.75rem",           # Slight rounding of the corners
-    "background": "rgba(255, 255, 255, 0.05)",  # Transparent white background
-    "color": "white",                    # White text
-    "width": "100%",                     # Full width of the banner
-    "box_shadow": "0 4px 10px 0 rgba(0, 0, 0, 0.15)"  # Subtle shadow for depth
-}
+            "padding": "4rem 1rem",              # Padding around the text
+            "border_radius": "0.75rem",           # Slight rounding of the corners
+            "background": "rgba(255, 255, 255, 0.05)",  # Transparent white background
+            "color": "white",                    # White text
+            "width": "100%",                     # Full width of the banner
+            "box_shadow": "0 4px 10px 0 rgba(0, 0, 0, 0.15)"  # Subtle shadow for depth
+        }
 
     )
 

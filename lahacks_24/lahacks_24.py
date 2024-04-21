@@ -108,9 +108,37 @@ class State(rx.State):
         else:
             self.visual_cards_list[idx] = self.cards_list[idx][0]
 
+    async def upload(self, files: list[rx.UploadFile]):
+        
+        await self.create_flashcard_prompt(files)
+        return rx.redirect("/quizlet")
+
 
 
 color = "rgb(107,99,246)"
+
+def main_banner():
+    """Creates a main banner similar to the KyoHealth example."""
+    return rx.box(
+        rx.text(
+            "Your AI-powered Copilot for Education",
+            style={
+                "font_size": "3rem",  # Large font size for main heading
+                "color": "#333",  # Dark text for contrast
+                "text_align": "center",  # Centered text
+                "margin": "1rem 0",  # Margin top and bottom
+            }
+        ),
+        style = {
+            "padding": "4rem 1rem",              # Padding around the text
+            "border_radius": "0.75rem",           # Slight rounding of the corners
+            "background": "rgba(255, 255, 255, 0.05)",  # Transparent white background
+            "color": "white",                    # White text
+            "width": "100%",                     # Full width of the banner
+            "box_shadow": "0 4px 10px 0 rgba(0, 0, 0, 0.15)"  # Subtle shadow for depth
+        }
+
+    )
 
 def fb(card: str, index: int):
     return rx.box(
@@ -127,6 +155,7 @@ def fb(card: str, index: int):
 def index():
     """The main view."""
     return rx.vstack(
+        main_banner(),
         rx.heading("Welcome to Suraq!"),
         rx.upload(
             rx.vstack(
@@ -140,13 +169,14 @@ def index():
         rx.hstack(rx.foreach(rx.selected_files("upload1"), rx.text)),
         rx.button(
             "Upload",
-            on_click= State.create_flashcard_prompt(rx.upload_files(upload_id="upload1"), State.img),
+            on_click= State.upload(rx.upload_files(upload_id="upload1")),
         ),
-        rx.button(
-            "Clear",
-            on_click=rx.clear_selected_files("upload1"),
-        ),
+        padding="5em",
+    )
 
+
+def quizlet_page():
+    return rx.box(
         rx.cond(
             State.processing,
             rx.chakra.circular_progress(is_indeterminate=True),
@@ -166,10 +196,14 @@ def index():
                                                    height="auto",
                                                    border="5px solid #555")),
 
-        padding="5em",
+        padding="5em"
     )
+
 
 
 
 app = rx.App()
 app.add_page(index)
+app.add_page(quizlet_page, route="/quizlet")
+
+
