@@ -1,0 +1,21 @@
+# Core Framework
+reflex==0.4.8.post1
+
+# AI & Machine Learning
+google-generativeai==0.5.2
+transformers==4.37.2
+
+# API & HTTP
+requests==2.31.0
+
+# Database
+psycopg2-binary==2.9.9
+
+# Environment Management
+python-dotenv==1.0.0
+
+# YouTube Integration
+youtube-transcript-api==0.6.2
+
+# Utilities
+Rx==3.2.0
